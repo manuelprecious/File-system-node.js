@@ -1,1 +1,1 @@
-delte file pat.txt to inof.ppt
+delete file image.txt
