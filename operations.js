@@ -19,7 +19,9 @@ const deleteFile = async (path) => {
     await fs.unlink(path);
     console.log(`File ${path} was deleted... \n`);
   } catch (err) {
-    console.log(`Error: N${err.message.slice(9, 33)}... \n`);
+    if(err.code === "ENOENT"){
+      console.log(`Error: File ${path} does not exist... \n`);
+    }
   }
 };
 
@@ -30,7 +32,9 @@ const renameFile = async (oldPath, newPath) => {
     console.log(`Renaming ${oldPath} to ${newPath} \n`);
 
   } catch (err) {
-    console.log(`Error: File ${oldPath} does not exist... \n`);
+    if(err.code === "ENOENT"){
+      console.log(`Error: File ${oldPath} does not exist... \n`);
+    }
   }
 };
 
