@@ -5,8 +5,8 @@ const path = require("node:path");
   try {
     // commands
     const CREATE_FILE = "create a file";
-    const DELETE_FILE = "delete a file";
-    const REMAME_FILE = "rename a file";
+    const DELETE_FILE = "delete the file";
+    const RENAME_FILE = "rename the file";
     const ADD_TO_FILE = "add to the file";
 
     let commandFilePath = "./command.txt";
@@ -45,26 +45,64 @@ const path = require("node:path");
       };
 
       // Function for handling file deletion
-      const deleteFile = async (path) => {};
+      const deleteFile = async (path) => {
+        console.log(`Deleting ${path}...`);
+      };
+
+      // Function for renaming a file
+      const renameFile = async (oldPath, newPath) => {
+        console.log(`Renaming ${oldPath} to ${newPath}`);
+      };
+
+      // Function for adding content to a file
+      const addToFile = async (path, content) => {
+        console.log(`Adding to ${path}`);
+        console.log(`Content: ${content}`);
+      };
 
       // Create a file:
       // Create a file <path>
       if (command.includes(CREATE_FILE)) {
         const filePath = path.resolve(
-          command.substring(CREATE_FILE.length + 2)
+          command.substring(CREATE_FILE.length + 1)
         );
         createFile(filePath);
       }
 
-    //   // Delete a file
-    //   // delete the file <path>
-    //   if (command.includes(DELETE_FILE)) {
-    //     const filePath = path.resolve(
-    //       command.substring(DELETE_FILE.length + 2)
-    //     );
+      // Delete a file
+      // delete the file <path>
+      if (command.includes(DELETE_FILE)) {
+        const filePath = path.resolve(
+          command.substring(DELETE_FILE.length + 1)
+        );
 
-    //     deleteFile(filePath);
-    //   }
+        deleteFile(filePath);
+      }
+
+      // rename a file
+      // rename the file <path> to <new-path>
+      if (command.includes(RENAME_FILE)) {
+        const _idx = command.indexOf(" of ");
+        const oldFilePath = path.resolve(
+          command.substring(RENAME_FILE.length + 1, _idx)
+        );
+        const newFilePath = path.resolve(command.substring(_idx + 4));
+
+        renameFile(oldFilePath, newFilePath);
+      }
+
+      // Add to file
+      // add to the file <path> this content: <content>
+      if (command.includes(ADD_TO_FILE)) {
+        const _idx = command.indexOf(" this content: ");
+        const filePath = path.resolve(
+          command.substring(ADD_TO_FILE.length + 1, _idx)
+        );
+
+        const content = command.substring(_idx + 15);
+
+        addToFile(filePath, content);
+      }
     });
 
     // A command for watching changes in the command.txt file

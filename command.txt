@@ -1,1 +1,1 @@
-create a files C:\Users\user\Desktop\test\test.txt
+add to the file C:\Users\user\Desktop\test\test.txt this content: this is some text
