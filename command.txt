@@ -1,1 +1,1 @@
-create file index.html
+delte file pat.txt to inof.ppt

@@ -13,7 +13,7 @@ const {
     const CREATE_FILE = "create file";
     const DELETE_FILE = "delete file";
     const RENAME_FILE = "rename file";
-    const ADD_TO_FILE = "add to the file";
+    const ADD_TO_FILE = "add to file";
 
     let commandFilePath = "./command.txt";
     const commandFileHandler = await fs.open(commandFilePath, "r");
@@ -45,7 +45,7 @@ const {
 
       // Delete a file
       // delete file <path>
-      if (command.includes(DELETE_FILE)) {
+      else if (command.includes(DELETE_FILE)) {
         const filePath = path.resolve(
           command.substring(DELETE_FILE.length + 1)
         );
@@ -55,8 +55,8 @@ const {
 
       // rename a file
       // rename file <path> to <new-path>
-      if (command.includes(RENAME_FILE)) {
-        const _idx = command.indexOf(" of ");
+      else if (command.includes(RENAME_FILE)) {
+        const _idx = command.indexOf(" to ");
         const oldFilePath = path.resolve(
           command.substring(RENAME_FILE.length + 1, _idx)
         );
@@ -66,8 +66,8 @@ const {
       }
 
       // Add to file
-      // add to the file <path> this content: <content>
-      if (command.includes(ADD_TO_FILE)) {
+      // add to file <path> this content: <content>
+      else if (command.includes(ADD_TO_FILE)) {
         const _idx = command.indexOf(" this content: ");
         const filePath = path.resolve(
           command.substring(ADD_TO_FILE.length + 1, _idx)
@@ -76,6 +76,10 @@ const {
         const content = command.substring(_idx + 15);
 
         addToFile(filePath, content);
+      } else {
+        let InvalidCommand = path.resolve(command.substring());
+        console.log("\n" + "Invalid command: " + command);
+        console.log("For help: enter command --help");
       }
     });
 
