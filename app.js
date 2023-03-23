@@ -1,12 +1,18 @@
 const fs = require("node:fs/promises");
 const path = require("node:path");
+const {
+  addToFile,
+  renameFile,
+  deleteFile,
+  createFile,
+} = require("./operations");
 
 (async function () {
   try {
     // commands
-    const CREATE_FILE = "create a file";
-    const DELETE_FILE = "delete the file";
-    const RENAME_FILE = "rename the file";
+    const CREATE_FILE = "create file";
+    const DELETE_FILE = "delete file";
+    const RENAME_FILE = "rename file";
     const ADD_TO_FILE = "add to the file";
 
     let commandFilePath = "./command.txt";
@@ -28,40 +34,8 @@ const path = require("node:path");
 
       const command = buffer.toString("utf8");
 
-      // Create a file
-
-      // Function for handling file creation.
-      const createFile = async (path) => {
-        try {
-          // Checking whether we already have that file or not.
-          const isFileExisting = await fs.open(path, "r");
-          isFileExisting.close();
-          return console.log(`The file ${path} already exists.`);
-        } catch (err) {
-          const newFileHandle = await fs.open(path, "w");
-          console.log("A new file was successfully created");
-          newFileHandle.close();
-        }
-      };
-
-      // Function for handling file deletion
-      const deleteFile = async (path) => {
-        console.log(`Deleting ${path}...`);
-      };
-
-      // Function for renaming a file
-      const renameFile = async (oldPath, newPath) => {
-        console.log(`Renaming ${oldPath} to ${newPath}`);
-      };
-
-      // Function for adding content to a file
-      const addToFile = async (path, content) => {
-        console.log(`Adding to ${path}`);
-        console.log(`Content: ${content}`);
-      };
-
       // Create a file:
-      // Create a file <path>
+      // create file <path>
       if (command.includes(CREATE_FILE)) {
         const filePath = path.resolve(
           command.substring(CREATE_FILE.length + 1)
@@ -70,7 +44,7 @@ const path = require("node:path");
       }
 
       // Delete a file
-      // delete the file <path>
+      // delete file <path>
       if (command.includes(DELETE_FILE)) {
         const filePath = path.resolve(
           command.substring(DELETE_FILE.length + 1)
@@ -80,7 +54,7 @@ const path = require("node:path");
       }
 
       // rename a file
-      // rename the file <path> to <new-path>
+      // rename file <path> to <new-path>
       if (command.includes(RENAME_FILE)) {
         const _idx = command.indexOf(" of ");
         const oldFilePath = path.resolve(
