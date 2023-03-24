@@ -5,6 +5,7 @@ const {
   renameFile,
   deleteFile,
   createFile,
+  helpGuide,
 } = require("./operations");
 
 (async function () {
@@ -14,7 +15,7 @@ const {
     const DELETE_FILE = "delete file";
     const RENAME_FILE = "rename file";
     const ADD_TO_FILE = "add to file";
-    const HELP = '--help';
+    const HELP = "--help";
 
     let commandFilePath = "./command.txt";
     const commandFileHandler = await fs.open(commandFilePath, "r");
@@ -65,31 +66,11 @@ const {
 
         renameFile(oldFilePath, newFilePath);
       }
+
       // Requesting help
       // --help
       else if (command.includes(HELP)) {
-        console.log(`
-        COMMANDS
-        
-        1. --help:                                          Displays the help menu.
-        
-        2. rename file <path> to <new-path>:-               Give a new name to a file
-                                                            (renaming a file.)
-
-        3. delete file <path>:-                             remove an existing file.
-                                                            If a file does not exist, an 
-                                                            error will be shown
-
-        4. create file <path>:-                             create a new file.
-                                                            If the file name already exists,
-                                                            an error will be thrown.
-                                            
-        5. add to file <path> this content: <content>:      Add content specified in the
-                                                            content flag to the specified
-                                                            file path.
-
-        NOTE: For command 5, if the specified file does not exist, a new one will be created.                                                    
-        `)
+        helpGuide();
       }
 
       // Add to file
@@ -99,11 +80,13 @@ const {
         const filePath = path.resolve(
           command.substring(ADD_TO_FILE.length + 1, _idx)
         );
-
         const content = command.substring(_idx + 15);
 
         addToFile(filePath, content);
-      } else {
+      } 
+      
+      // Command to handle invalid commands
+      else {
         console.log("\n" + "Invalid command: " + command);
         console.log("For help: enter command --help");
       }
