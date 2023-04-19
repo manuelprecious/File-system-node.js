@@ -11,14 +11,19 @@ const {
 (async function () {
   try {
     // commands
-    const CREATE_FILE = "create file";
-    const DELETE_FILE = "delete file";
-    const RENAME_FILE = "rename file";
-    const ADD_TO_FILE = "add to file";
+    const CREATE_FILE = "mkfile";
+    const DELETE_FILE = "delfile";
+    const RENAME_FILE = "renfile";
+    const ADD_TO_FILE = "appendfile";
     const HELP = "--help";
 
+    // Specifying the name of the file path.
     let commandFilePath = "./command.txt";
+
     const commandFileHandler = await fs.open(commandFilePath, "r");
+
+    // A command for watching changes in the command.txt file
+    const watcher = fs.watch(commandFilePath);
 
     commandFileHandler.on("change", async () => {
       // We want to read the content of the file.
@@ -37,7 +42,7 @@ const {
       const command = buffer.toString("utf8");
 
       // Create a file:
-      // create file <path>
+      // mkfile <path>
       if (command.includes(CREATE_FILE)) {
         const filePath = path.resolve(
           command.substring(CREATE_FILE.length + 1)
@@ -46,7 +51,7 @@ const {
       }
 
       // Delete a file
-      // delete file <path>
+      // delfile <path>
       else if (command.includes(DELETE_FILE)) {
         const filePath = path.resolve(
           command.substring(DELETE_FILE.length + 1)
@@ -56,7 +61,7 @@ const {
       }
 
       // rename a file
-      // rename file <path> to <new-path>
+      // renfile <path> to <new-path>
       else if (command.includes(RENAME_FILE)) {
         const _idx = command.indexOf(" to ");
         const oldFilePath = path.resolve(
@@ -74,7 +79,7 @@ const {
       }
 
       // Add to file
-      // add to file <path> this content: <content>
+      // appendfile <path> this content: <content>
       else if (command.includes(ADD_TO_FILE)) {
         const _idx = command.indexOf(" this content: ");
         const filePath = path.resolve(
@@ -83,17 +88,14 @@ const {
         const content = command.substring(_idx + 15);
 
         addToFile(filePath, content);
-      } 
-      
+      }
+
       // Command to handle invalid commands
       else {
         console.log("\n" + "Invalid command: " + command);
         console.log("For help: enter command --help");
       }
     });
-
-    // A command for watching changes in the command.txt file
-    const watcher = fs.watch(commandFilePath);
 
     for await (const event of watcher) {
       if (event.eventType === "change") {

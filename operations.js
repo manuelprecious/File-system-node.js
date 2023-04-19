@@ -40,31 +40,33 @@ const renameFile = async (oldPath, newPath) => {
 // Function for adding content to a file
 const addToFile = async (path, content) => {
   try {
-    await fs.appendFile(path, `${content}\n`);
-    console.log(`Content was added to file ${path} \n`);
+    if (path) {
+      await fs.appendFile(path, `${content}\n`);
+      console.log(`Content was added to file ${path} \n`);
+    }
   } catch (err) {
     console.log(err.message + "\n");
   }
 };
 
-const helpGuide = async () => {
+const helpGuide = () => {
   console.log(`
   COMMANDS
   
   1. --help:                                          Displays the help menu.
   
-  2. rename file <path> to <new-path>:-               Give a new name to a file
+  2. renfile <path> to <new-path>:-               Give a new name to a file
                                                       (renaming a file.)
 
-  3. delete file <path>:-                             remove an existing file.
+  3. delfile <path>:-                             remove an existing file.
                                                       If a file does not exist, an 
                                                       error will be shown
 
-  4. create file <path>:-                             create a new file.
+  4. mkfile <path>:-                             create a new file.
                                                       If the file name already exists,
                                                       an error will be thrown.
                                       
-  5. add to file <path> this content: <content>:      Add content specified in the
+  5. appendfile <path> this content: <content>:      Add content specified in the
                                                       content flag to the specified
                                                       file path.
 
